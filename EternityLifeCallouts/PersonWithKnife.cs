@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using CitizenFX.Core;
+using CitizenFX.Core.Native;
 using FivePD.API;
 using FivePD.API.Utils;
 
@@ -23,11 +25,39 @@ namespace EternityLifeCallouts
         {
             base.OnStart(closest);
             var ped = await this.SpawnPed(RandomUtils.GetRandomPed(), (Vector3) this.Location, 0.0f);
-            ped.AlwaysKeepTask = true;
-            ped.BlockPermanentEvents = true;
             ped.Weapons.Give(WeaponHash.Knife, 600, true, true);
-            ped.Task.WanderAround();
-            this.Tick += new Func<Task>(this.OnTick);
+
+            var scenarios = new List<Action>
+            {
+                () => ScenarioWanderAround(ped),
+                () => ScenarioAttackPolice(ped),
+            };
+
+            scenarios.SelectRandom()();
+        }
+
+        private void ScenarioWanderAround(Ped suspect)
+        {
+            suspect.Task.WanderAround();
+        }
+
+        private void ScenarioAttackPolice(Ped suspect)
+        {
+            API.SetPedRelationshipGroupHash(suspect.Handle, (uint) API.GetHashKey("HATES_PLAYER"));
+            API.SetPedRelationshipGroupHash(Game.PlayerPed.Handle, (uint) API.GetHashKey("PLAYER"));
+
+            API.SetRelationshipBetweenGroups(5, (uint) API.GetHashKey("HATES_PLAYER"), (uint) API.GetHashKey("PLAYER"));
+            API.SetRelationshipBetweenGroups(5, (uint) API.GetHashKey("PLAYER"), (uint) API.GetHashKey("HATES_PLAYER"));
+
+            Debug.WriteLine($"Relationship is: {suspect.GetRelationshipWithPed(Game.PlayerPed)}");
+            API.SetPedCombatAttributes(suspect.Handle, 46, true);
+            API.SetPedCombatAbility(suspect.Handle, 100);
+
+            API.SetPedCombatMovement(suspect.Handle, 2);
+
+            API.SetPedCombatRange(suspect.Handle, 0);
+
+            suspect.Task.WanderAround(suspect.Position, 5);
         }
 
         public override async Task OnAccept()
