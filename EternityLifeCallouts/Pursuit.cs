@@ -1,7 +1,8 @@
 namespace EternityLifeCallouts
 {
-    public class Pursuit
+#if DEBUG
+    public class Pursuit : FivePD.API.Pursuit
     {
-        
     }
+#endif
 }

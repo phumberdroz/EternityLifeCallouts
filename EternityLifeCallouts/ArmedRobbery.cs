@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
+using EternityLifeCallouts.Extensions;
 using FivePD.API;
 using FivePD.API.Utils;
 
@@ -110,8 +111,8 @@ namespace EternityLifeCallouts
             API.Wait(5000);
             foreach (var suspect in suspects)
             {
-                suspect.RelationshipGroup = "HATES_PLAYER";
-                suspect.Task.FightAgainstHatedTargets(this.StartDistance);
+                suspect.Task.Wait(-1);
+                suspect.MakeAggressiveAgainstPlayers();
             }
         }
 
@@ -131,9 +132,7 @@ namespace EternityLifeCallouts
         {
             foreach (var suspect in suspects)
             {
-                suspect.Weapons.Give(WeaponHash.SweeperShotgun, 600, true,true);
-                suspect.RelationshipGroup = "HATES_PLAYER";
-                suspect.Task.FightAgainstHatedTargets(this.StartDistance);
+                suspect.MakeAggressiveAgainstPlayers();
             }
             victim.Task.HandsUp(-1);
         }

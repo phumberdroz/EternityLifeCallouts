@@ -1,7 +1,13 @@
+using FivePD.API;
+
 namespace EternityLifeCallouts
 {
-    public class HouseBurglary
+#if DEBUG
+    
+    [CalloutProperties("House Burglary", "meat", "1.0")]
+    public class HouseBurglary : Callout
     {
         
     }
+#endif
 }

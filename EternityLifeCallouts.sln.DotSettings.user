@@ -4,4 +4,6 @@
   &lt;Assembly Path="C:\Users\phumb\RiderProjects\EternityLifeCallouts\packages\FivePD.net.1.2.0.3\lib\net452\FivePD.net.dll" /&gt;&#xD;
   &lt;Assembly Path="E:\txData\CFXDefault_FC08EE.base\resources\fivepd\FivePD.net.dll" /&gt;&#xD;
   &lt;Assembly Path="C:\Users\phumb\RiderProjects\EternityLifeCallouts\packages\CitizenFX.Core.Client.1.0.3324\lib\net45\CitizenFX.Core.Client.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Users\phumb\RiderProjects\EternityLifeCallouts\packages\FivePD.net.1.3.0\lib\net452\FivePD.net.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Users\phumb\RiderProjects\EternityLifeCallouts\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String></wpf:ResourceDictionary>

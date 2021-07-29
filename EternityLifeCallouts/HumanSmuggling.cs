@@ -12,12 +12,11 @@ namespace EternityLifeCallouts
     {
         public HumanSmuggling()
         {
-            var random = new Random();
-            this.InitInfo(World.GetNextPositionOnStreet(Game.PlayerPed.Position.Around(random.Next(100, 700)), false));
-            this.ShortName = "Human Trafficking";
-            this.CalloutDescription = "911 Call : Reports of human trafficking.";
-            this.ResponseCode = 3;
-            this.StartDistance = 240;
+            InitInfo(World.GetNextPositionOnStreet(Game.PlayerPed.Position.Around(RandomUtils.GetRandomNumber(100, 700)), false));
+            ShortName = "Human Trafficking";
+            CalloutDescription = "911 Call : Reports of human trafficking.";
+            ResponseCode = 3;
+            StartDistance = 240;
         }
         private static readonly PedHash[][] SkinCategories =
         {
@@ -27,14 +26,12 @@ namespace EternityLifeCallouts
 
         public override async Task OnAccept()
         {
-            this.InitBlip(150f, (BlipColor) 66, (BlipSprite) 9, 100);
+            InitBlip(150f, (BlipColor) 66, (BlipSprite) 9, 100);
         }
 
         public override async void OnStart(Ped closest)
         {
-            var random = new Random();
             var ped1 = await this.SpawnPed(PedHash.Mani, (Vector3) this.Location, 0.0f);
-            var x = random.Next(1, 101);
             var suspects = new List<Ped>();
             foreach (var pedHash in SkinCategories.SelectRandom())
             {

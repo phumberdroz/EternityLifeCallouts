@@ -43,16 +43,16 @@ namespace EternityLifeCallouts
 
         public PedestrianOnHighway()
         {
-            this.InitInfo(Utils.GetLocation(CalloutPositions, Game.PlayerPed.Position));
-            this.ShortName = "Pedestrian On Highway";
-            this.CalloutDescription = "911 Call : Pedestrian reported walking into traffic on the highway.";
-            this.ResponseCode = 3;
-            this.StartDistance = 100;
+            InitInfo(Utils.GetLocation(CalloutPositions, Game.PlayerPed.Position));
+            ShortName = "Pedestrian On Highway";
+            CalloutDescription = "911 Call : Pedestrian reported walking into traffic on the highway.";
+            ResponseCode = 3;
+            StartDistance = 100;
         }
 
         public override async Task OnAccept()
         {
-            this.InitBlip(75f, (BlipColor) 66, (BlipSprite) 9, 100);
+            InitBlip(75f, (BlipColor) 66, (BlipSprite) 9, 100);
             Utils.AdvNotify("commonmenu", "mp_alerttriangle", false, 1, "911 Dispatch:", "~y~Additional Info",
                 "Reports of a pedestrian on the highway.");
         }

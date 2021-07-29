@@ -1,0 +1,45 @@
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="$(SolutionDir)\EternityLifeCallouts\bin\Release\EternityLifeCallouts.net.dll" #>
+<#@ assembly name="$(SolutionDir)\packages\CitizenFX.Core.Client.1.0.3324\lib\net45\CitizenFX.Core.Client.dll"#>
+<#@ assembly name="$(SolutionDir)\packages\FivePD.net.1.3.0\lib\net452\FivePD.net.dll"#>
+<#@ assembly name="$(SolutionDir)\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll"#>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" #>
+<#@ import namespace="FivePD.API" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ output extension=".json"#>
+<#@ import namespace="Newtonsoft.Json" #>
+<#
+    var type = typeof(Callout);
+    var model = typeof(EternityLifeCallouts.ActiveShooter).Assembly.GetTypes().Where(p => type.IsAssignableFrom(p));
+    var configEntries = new Dictionary<string, ConfigEntry>() {};
+    foreach (var type1 in model)
+    {
+        object[] attributes = type1.GetCustomAttributes(true);
+        for (int i = 0; i < attributes.Length; i++)
+        {
+            if (attributes[i] is CalloutPropertiesAttribute)
+            {
+                var configEntry = new ConfigEntry();
+                configEntry.IgnoreDistance = false;
+                configEntry.MinTimeout = 0;
+                configEntry.Probability = 1;
+                configEntries.Add(((CalloutPropertiesAttribute) attributes[i]).name, configEntry);
+            }
+        }
+    }
+
+    var serializeObject = JsonConvert.SerializeObject(configEntries, Formatting.Indented);
+    Write(serializeObject);
+#>
+<#+
+    public class ConfigEntry
+    {
+        public bool IgnoreDistance { get; set; }
+        public int MinTimeout { get; set; }
+        public int Probability { get; set; }
+        public object Departments { get; set; }
+    }
+#>

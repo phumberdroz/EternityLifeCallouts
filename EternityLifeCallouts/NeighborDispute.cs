@@ -8,7 +8,7 @@ using FivePD.API.Utils;
 
 namespace EternityLifeCallouts
 {
-    [CalloutProperties("NeighborDispute", "meat", "1.0")]
+    [CalloutProperties("Neighbor Dispute", "meat", "1.0")]
     public class NeighborDispute : Callout
     {
         private static readonly Vector3[] CalloutPositions =
@@ -106,16 +106,16 @@ namespace EternityLifeCallouts
 
         public NeighborDispute()
         {
-            this.InitInfo(Utils.GetLocation(CalloutPositions, Game.PlayerPed.Position));
-            this.ShortName = "Neighbor Dispute";
-            this.CalloutDescription = "911 Call : Reports of neighbors in a dispute.";
-            this.ResponseCode = 2;
-            this.StartDistance = 150;
+            InitInfo(Utils.GetLocation(CalloutPositions, Game.PlayerPed.Position));
+            ShortName = "Neighbor Dispute";
+            CalloutDescription = "911 Call : Reports of neighbors in a dispute.";
+            ResponseCode = 2;
+            StartDistance = 150;
         }
 
         public override async Task OnAccept()
         {
-            this.InitBlip(75f, (BlipColor) 66, (BlipSprite) 9, 100);
+            InitBlip(75f, (BlipColor) 66, (BlipSprite) 9, 100);
             Utils.AdvNotify("commonmenu", "mp_alerttriangle", false, 1, "911 Dispatch:", "~y~Additional Info",
                 "~w~Head to the scene and resolve the issue.");
         }
@@ -150,8 +150,8 @@ namespace EternityLifeCallouts
 
         private void Scenario1(Ped neighbor1, Ped neighbor2)
         {
-            neighbor1.Task.TurnTo((Entity) neighbor2, -1);
-            neighbor2.Task.TurnTo((Entity) neighbor1, -1);
+            neighbor1.Task.TurnTo(neighbor2, -1);
+            neighbor2.Task.TurnTo(neighbor1, -1);
         }
 
         private void Scenario2(Ped neighbor1, Ped neighbor2)

@@ -1,12 +1,13 @@
 using System;
 using System.Threading.Tasks;
 using CitizenFX.Core;
+using EternityLifeCallouts.Extensions;
 using FivePD.API;
 using FivePD.API.Utils;
 
 namespace EternityLifeCallouts
 {
-    [CalloutProperties("ShotsFired", "meat", "1.0")]
+    [CalloutProperties("Active Shooter", "meat", "1.0")]
     public class ActiveShooter : Callout
     {
         private static readonly string[] ShortNames =
@@ -130,9 +131,7 @@ namespace EternityLifeCallouts
 
         public ActiveShooter()
         {
-            var calloutCord = Utils.GetLocation(CalloutPositions, Game.PlayerPed.Position);
-            this.InitInfo(calloutCord);
-
+            this.InitInfo(Utils.GetLocation(CalloutPositions, Game.PlayerPed.Position));
             this.ShortName = ShortNames.SelectRandom();
             this.ResponseCode = 3;
             this.StartDistance = 150;
@@ -151,12 +150,10 @@ namespace EternityLifeCallouts
             for (int i = 0; i < 5; i++)
             {
                 var spawnedPed = await this.SpawnPed(RandomUtils.GetRandomPed(), this.Location.Around(5), 0.0f);
-                spawnedPed.AlwaysKeepTask = true;
-                spawnedPed.BlockPermanentEvents = true;
                 // Todo add weapon variety 
                 spawnedPed.Weapons.Give(WeaponHash.HeavySniper, 600, true, true);
-                spawnedPed.RelationshipGroup = "HATES_PLAYER";
-                spawnedPed.Task.FightAgainstHatedTargets(this.StartDistance);
+                spawnedPed.MakeAggressiveAgainstPlayers();
+                spawnedPed.Task.WanderAround();
             }
         }
     }

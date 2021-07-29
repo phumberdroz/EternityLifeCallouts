@@ -13,18 +13,16 @@ namespace EternityLifeCallouts
     {
         public ShotsFired()
         {
-            var random = new Random();
-            this.InitInfo(World.GetNextPositionOnStreet(Game.PlayerPed.Position.Around(random.Next(100, 700)), false));
-            this.ShortName = "Shots Fired";
-            this.CalloutDescription =
-                "911 Call : Shots fired. Respond accordingly, remember to respond code 1 when nearby.";
-            this.ResponseCode = 3;
-            this.StartDistance = 200;
+            InitInfo(World.GetNextPositionOnStreet(Game.PlayerPed.Position.Around(RandomUtils.GetRandomNumber(100, 700)), false));
+            ShortName = "Shots Fired";
+            CalloutDescription = "911 Call : Shots fired. Respond accordingly, remember to respond code 1 when nearby.";
+            ResponseCode = 3;
+            StartDistance = 200;
         }
 
         public override async Task OnAccept()
         {
-            this.InitBlip(75f, (BlipColor) 66, (BlipSprite) 9, 100);
+            InitBlip(75f, (BlipColor) 66, (BlipSprite) 9, 100);
             Utils.AdvNotify("commonmenu", "mp_alerttriangle", false, 1, "911 Dispatch:", "~y~Additional Info",
                 "~w~ Caller reports multiple armed suspects shooting.");
         }
@@ -62,7 +60,7 @@ namespace EternityLifeCallouts
             victim.RelationshipGroup = "PLAYER";
             foreach (var suspect in suspects)
             {
-                suspect.Weapons.Give((WeaponHash.CombatPistol), 600, true, true);
+                suspect.Weapons.Give(WeaponHash.CombatPistol, 600, true, true);
                 suspect.RelationshipGroup = "HATES_PLAYER";
                 suspect.Task.FightAgainstHatedTargets(this.StartDistance);
             }

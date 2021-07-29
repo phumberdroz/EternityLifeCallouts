@@ -13,12 +13,11 @@ namespace EternityLifeCallouts
     {
         public PersonWithKnife()
         {
-            var random = new Random();
-            this.InitInfo(World.GetNextPositionOnStreet(Game.PlayerPed.Position.Around(random.Next(100, 700)), false));
-            this.ShortName = "Person With Knife";
-            this.CalloutDescription = "911 Call : Person with knife spotted.";
-            this.ResponseCode = 3;
-            this.StartDistance = 200;
+            InitInfo(World.GetNextPositionOnStreet(Game.PlayerPed.Position.Around(RandomUtils.GetRandomNumber(100, 700)), false));
+            ShortName = "Person With Knife";
+            CalloutDescription = "911 Call : Person with knife spotted.";
+            ResponseCode = 3;
+            StartDistance = 200;
         }
 
         public override async void OnStart(Ped closest)

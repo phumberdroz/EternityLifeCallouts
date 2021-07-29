@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CitizenFX.Core;
+using EternityLifeCallouts.Extensions;
 using FivePD.API;
 using FivePD.API.Utils;
 
@@ -12,17 +13,16 @@ namespace EternityLifeCallouts
     {
         public AttemptedKidnapping()
         {
-            var random = new Random();
-            this.InitInfo(World.GetNextPositionOnStreet(Game.PlayerPed.Position.Around(random.Next(100, 700)), false));
-            this.ShortName = "Attempted Kidnapping";
-            this.CalloutDescription = "911 Call : Reports of attempted kidnapping.";
-            this.ResponseCode = 3;
-            this.StartDistance = 150;
+            InitInfo(World.GetNextPositionOnStreet(Game.PlayerPed.Position.Around(RandomUtils.GetRandomNumber(100, 700)), false));
+            ShortName = "Attempted Kidnapping";
+            CalloutDescription = "911 Call : Reports of attempted kidnapping.";
+            ResponseCode = 3;
+            StartDistance = 150;
         }
 
         public override async Task OnAccept()
         {
-            this.InitBlip(75f, (BlipColor) 66, (BlipSprite) 9, 100);
+            InitBlip(75f, (BlipColor) 66, (BlipSprite) 9, 100);
             Utils.AdvNotify("commonmenu", "mp_alerttriangle", false, 1, "911 Dispatch:", "~y~Additional Info",
                 "~w~Reports of a strange man chasing a woman.");
         }
@@ -64,20 +64,17 @@ namespace EternityLifeCallouts
         private void Scenario2(Ped victim, Ped suspect)
         {
             victim.Weapons.Give(WeaponHash.Knife, 600, true, true);
-            victim.RelationshipGroup = "HATES_PLAYER";
-            victim.Task.FightAgainstHatedTargets(this.StartDistance);
+            victim.MakeAggressiveAgainstPlayers();
 
             suspect.Weapons.Give(WeaponHash.CombatPistol, 600, true, true);
-            suspect.RelationshipGroup = "HATES_PLAYER";
-            suspect.Task.FightAgainstHatedTargets(this.StartDistance);
+            suspect.MakeAggressiveAgainstPlayers();
         }
 
         private void Scenario3(Ped victim, Ped suspect)
         {
             suspect.Weapons.Give(WeaponHash.SweeperShotgun, 600, true, true);
             victim.Task.ReactAndFlee(suspect);
-            suspect.RelationshipGroup = "HATES_PLAYER";
-            suspect.Task.FightAgainstHatedTargets(this.StartDistance);
+            suspect.MakeAggressiveAgainstPlayers();
         }
     }
 }

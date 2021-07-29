@@ -1,7 +1,14 @@
+using FivePD.API;
+
 namespace EternityLifeCallouts
 {
-    public class StoreHoldup
+#if DEBUG
+    
+    [CalloutProperties("Store Holdup", "meat", "1.0")]
+    public class StoreHoldup : Callout
     {
         
     }
+
+#endif
 }
