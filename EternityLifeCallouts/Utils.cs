@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using CitizenFX.Core;
 
@@ -20,6 +21,7 @@ namespace EternityLifeCallouts
 
             return calloutCord;
         }
+        [Obsolete("AdvNotify is depcrated use Callout.ShowNetworkedNotification instead")]
         public static void AdvNotify(
             string textureDict,
             string textureName,
