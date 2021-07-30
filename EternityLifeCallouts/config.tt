@@ -5,20 +5,19 @@
 <#@ assembly name="$(SolutionDir)\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll"#>
 <#@ assembly name="System.Core" #>
 <#@ assembly name="System.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" #>
-<#@ import namespace="FivePD.API" #>
+<#@ output extension=".json"#>
 <#@ import namespace="System.Collections.Generic" #>
 <#@ import namespace="System.Linq" #>
-<#@ import namespace="System.Text" #>
-<#@ output extension=".json"#>
+<#@ import namespace="FivePD.API" #>
 <#@ import namespace="Newtonsoft.Json" #>
 <#
     var type = typeof(Callout);
-    var model = typeof(EternityLifeCallouts.ActiveShooter).Assembly.GetTypes().Where(p => type.IsAssignableFrom(p));
-    var configEntries = new Dictionary<string, ConfigEntry>() {};
+    var model = typeof(ActiveShooter).Assembly.GetTypes().Where(p => type.IsAssignableFrom(p));
+    var configEntries = new Dictionary<string, ConfigEntry>();
     foreach (var type1 in model)
     {
-        object[] attributes = type1.GetCustomAttributes(true);
-        for (int i = 0; i < attributes.Length; i++)
+        var attributes = type1.GetCustomAttributes(true);
+        for (var i = 0; i < attributes.Length; i++)
         {
             if (attributes[i] is CalloutPropertiesAttribute)
             {

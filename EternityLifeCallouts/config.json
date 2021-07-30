@@ -1,0 +1,74 @@
+{
+  "Active Shooter": {
+    "IgnoreDistance": false,
+    "MinTimeout": 0,
+    "Probability": 1,
+    "Departments": null
+  },
+  "Armed Robbery": {
+    "IgnoreDistance": false,
+    "MinTimeout": 0,
+    "Probability": 1,
+    "Departments": null
+  },
+  "Attempted Kidnapping": {
+    "IgnoreDistance": false,
+    "MinTimeout": 0,
+    "Probability": 1,
+    "Departments": null
+  },
+  "Bench Warrent": {
+    "IgnoreDistance": false,
+    "MinTimeout": 0,
+    "Probability": 1,
+    "Departments": null
+  },
+  "Bicycle on Highway": {
+    "IgnoreDistance": false,
+    "MinTimeout": 0,
+    "Probability": 1,
+    "Departments": null
+  },
+  "EMS Assistance": {
+    "IgnoreDistance": false,
+    "MinTimeout": 0,
+    "Probability": 1,
+    "Departments": null
+  },
+  "Human Trafficking": {
+    "IgnoreDistance": false,
+    "MinTimeout": 0,
+    "Probability": 1,
+    "Departments": null
+  },
+  "Neighbor Dispute": {
+    "IgnoreDistance": false,
+    "MinTimeout": 0,
+    "Probability": 1,
+    "Departments": null
+  },
+  "Pedestrian on Highway": {
+    "IgnoreDistance": false,
+    "MinTimeout": 0,
+    "Probability": 1,
+    "Departments": null
+  },
+  "Person with Knife": {
+    "IgnoreDistance": false,
+    "MinTimeout": 0,
+    "Probability": 1,
+    "Departments": null
+  },
+  "Shots Fired": {
+    "IgnoreDistance": false,
+    "MinTimeout": 0,
+    "Probability": 1,
+    "Departments": null
+  },
+  "Stolen Prison Bus": {
+    "IgnoreDistance": false,
+    "MinTimeout": 0,
+    "Probability": 1,
+    "Departments": null
+  }
+}

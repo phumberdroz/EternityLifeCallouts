@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CitizenFX.Core;
@@ -10,32 +9,34 @@ namespace EternityLifeCallouts
     [CalloutProperties("Human Trafficking", "meat", "1.0")]
     public class HumanSmuggling : Callout
     {
+        private static readonly PedHash[][] SkinCategories =
+        {
+            new[] {PedHash.MexGoon01GMY, PedHash.MexGoon02GMY, PedHash.MexGoon03GMY},
+            new[] {PedHash.Misty01, PedHash.Stripper01SFY, PedHash.Stripper02SFY}
+        };
+
         public HumanSmuggling()
         {
-            InitInfo(World.GetNextPositionOnStreet(Game.PlayerPed.Position.Around(RandomUtils.GetRandomNumber(100, 700)), false));
+            InitInfo(World.GetNextPositionOnStreet(
+                Game.PlayerPed.Position.Around(RandomUtils.GetRandomNumber(100, 700))));
             ShortName = "Human Trafficking";
             CalloutDescription = "911 Call : Reports of human trafficking.";
             ResponseCode = 3;
             StartDistance = 240;
         }
-        private static readonly PedHash[][] SkinCategories =
-        {
-            new[] {PedHash.MexGoon01GMY, PedHash.MexGoon02GMY, PedHash.MexGoon03GMY},
-            new[] {PedHash.Misty01, PedHash.Stripper01SFY, PedHash.Stripper02SFY,}
-        };
 
         public override async Task OnAccept()
         {
-            InitBlip(150f, (BlipColor) 66, (BlipSprite) 9, 100);
+            InitBlip(150f);
         }
 
         public override async void OnStart(Ped closest)
         {
-            var ped1 = await this.SpawnPed(PedHash.Mani, (Vector3) this.Location, 0.0f);
+            var ped1 = await SpawnPed(PedHash.Mani, Location);
             var suspects = new List<Ped>();
             foreach (var pedHash in SkinCategories.SelectRandom())
             {
-                var spawnedPed = await this.SpawnPed(pedHash, this.Location, 0.0f);
+                var spawnedPed = await SpawnPed(pedHash, Location);
                 suspects.Add(spawnedPed);
             }
 
@@ -46,19 +47,16 @@ namespace EternityLifeCallouts
                 "paradise", "minivan", "rumpo", "Pony"
             };
             var model = new Model(bicyclesModelNames.SelectRandom());
-            var vehicle = await this.SpawnVehicle(model, this.Location, 0.0f);
+            var vehicle = await SpawnVehicle(model, Location);
             ped1.SetIntoVehicle(vehicle, VehicleSeat.Driver);
-            foreach (var suspect in suspects)
-            {
-                suspect.SetIntoVehicle(vehicle, VehicleSeat.Any);
-            }
+            foreach (var suspect in suspects) suspect.SetIntoVehicle(vehicle, VehicleSeat.Any);
             ped1.Task.CruiseWithVehicle(vehicle, 1f, 1);
             ped1.AlwaysKeepTask = true;
             ped1.BlockPermanentEvents = true;
             vehicle.IsPersistent = true;
             base.OnStart(closest);
             ped1.Task.CruiseWithVehicle(vehicle, 30f, 1);
-            ped1.Weapons.Give((WeaponHash.CombatPistol), 600, true, true);
+            ped1.Weapons.Give(WeaponHash.CombatPistol, 600, true, true);
             // this.Tick += new Func<Task>(this.OnTick);
             // Todo add scenarios 
         }

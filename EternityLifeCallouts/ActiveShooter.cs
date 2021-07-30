@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using EternityLifeCallouts.Extensions;
@@ -131,15 +130,15 @@ namespace EternityLifeCallouts
 
         public ActiveShooter()
         {
-            this.InitInfo(Utils.GetLocation(CalloutPositions, Game.PlayerPed.Position));
-            this.ShortName = ShortNames.SelectRandom();
-            this.ResponseCode = 3;
-            this.StartDistance = 150;
+            InitInfo(Utils.GetLocation(CalloutPositions, Game.PlayerPed.Position));
+            ShortName = ShortNames.SelectRandom();
+            ResponseCode = 3;
+            StartDistance = 150;
         }
 
         public override async Task OnAccept()
         {
-            this.InitBlip(75f, (BlipColor) 66, (BlipSprite) 9, 100);
+            InitBlip();
             Utils.AdvNotify("commonmenu", "mp_alerttriangle", false, 1, "911 Dispatch:", "~y~Additional Info",
                 "~w~Regroup with other units and head to the scene.");
         }
@@ -147,9 +146,9 @@ namespace EternityLifeCallouts
         public override async void OnStart(Ped player)
         {
             base.OnStart(player);
-            for (int i = 0; i < 5; i++)
+            for (var i = 0; i < 5; i++)
             {
-                var spawnedPed = await this.SpawnPed(RandomUtils.GetRandomPed(), this.Location.Around(5), 0.0f);
+                var spawnedPed = await SpawnPed(RandomUtils.GetRandomPed(), Location.Around(5));
                 // Todo add weapon variety 
                 spawnedPed.GiveRandomWeapon();
                 spawnedPed.MakeAggressiveAgainstPlayers();

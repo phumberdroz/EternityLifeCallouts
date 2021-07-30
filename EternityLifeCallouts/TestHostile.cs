@@ -1,12 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
-using CitizenFX.Core;
-using CitizenFX.Core.Native;
-using FivePD.API;
-using FivePD.API.Utils;
-
 namespace EternityLifeCallouts
 {
 #if DEBUG

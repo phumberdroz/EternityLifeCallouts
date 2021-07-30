@@ -1,5 +1,4 @@
 using System.Linq;
-using System.Runtime.CompilerServices;
 using CitizenFX.Core;
 using FivePD.API;
 
@@ -15,12 +14,13 @@ namespace EternityLifeCallouts.Extensions
             {
                 var distanceToPosition = player.Position.DistanceToSquared(position);
                 if (distance > distanceToPosition)
-                {   
+                {
                     Debug.WriteLine($"Distance was {distance} is now {distanceToPosition}");
                     closestPlayer = player;
                     distance = distanceToPosition;
                 }
             }
+
             return closestPlayer;
         }
     }

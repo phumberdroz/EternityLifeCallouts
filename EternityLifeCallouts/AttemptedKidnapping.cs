@@ -13,7 +13,8 @@ namespace EternityLifeCallouts
     {
         public AttemptedKidnapping()
         {
-            InitInfo(World.GetNextPositionOnStreet(Game.PlayerPed.Position.Around(RandomUtils.GetRandomNumber(100, 700)), false));
+            InitInfo(World.GetNextPositionOnStreet(
+                Game.PlayerPed.Position.Around(RandomUtils.GetRandomNumber(100, 700))));
             ShortName = "Attempted Kidnapping";
             CalloutDescription = "911 Call : Reports of attempted kidnapping.";
             ResponseCode = 3;
@@ -22,7 +23,7 @@ namespace EternityLifeCallouts
 
         public override async Task OnAccept()
         {
-            InitBlip(75f, (BlipColor) 66, (BlipSprite) 9, 100);
+            InitBlip();
             Utils.AdvNotify("commonmenu", "mp_alerttriangle", false, 1, "911 Dispatch:", "~y~Additional Info",
                 "~w~Reports of a strange man chasing a woman.");
         }
@@ -30,26 +31,26 @@ namespace EternityLifeCallouts
         public override async void OnStart(Ped closest)
         {
             base.OnStart(closest);
-            var victimPedHashes = new PedHash[]
+            var victimPedHashes = new[]
             {
                 PedHash.Beach01AFM,
                 PedHash.Ballas01GFY,
-                PedHash.Business01AFY,
+                PedHash.Business01AFY
             };
-            var suspectPedHashes = new PedHash[]
+            var suspectPedHashes = new[]
             {
                 PedHash.ChiCold01GMM,
                 PedHash.Acult01AMY,
-                PedHash.Acult01AMM,
+                PedHash.Acult01AMM
             };
-            var victim = await this.SpawnPed(victimPedHashes.SelectRandom(), this.Location.Around(5));
-            var suspect = await this.SpawnPed(suspectPedHashes.SelectRandom(), this.Location.Around(5));
+            var victim = await SpawnPed(victimPedHashes.SelectRandom(), Location.Around(5));
+            var suspect = await SpawnPed(suspectPedHashes.SelectRandom(), Location.Around(5));
 
             var functions = new List<Action>
             {
                 () => Scenario1(victim, suspect),
                 () => Scenario2(victim, suspect),
-                () => Scenario3(victim, suspect),
+                () => Scenario3(victim, suspect)
             };
             functions.SelectRandom()();
         }

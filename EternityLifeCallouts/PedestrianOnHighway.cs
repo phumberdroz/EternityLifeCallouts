@@ -52,7 +52,7 @@ namespace EternityLifeCallouts
 
         public override async Task OnAccept()
         {
-            InitBlip(75f, (BlipColor) 66, (BlipSprite) 9, 100);
+            InitBlip();
             Utils.AdvNotify("commonmenu", "mp_alerttriangle", false, 1, "911 Dispatch:", "~y~Additional Info",
                 "Reports of a pedestrian on the highway.");
         }
@@ -60,10 +60,9 @@ namespace EternityLifeCallouts
         public override async void OnStart(Ped closest)
         {
             base.OnStart(closest);
-            var ped = await this.SpawnPed(
+            var ped = await SpawnPed(
                 RandomUtils.GetRandomPed(),
-                World.GetNextPositionOnStreet(this.Location),
-                0.0f);
+                World.GetNextPositionOnStreet(Location));
             ped.AlwaysKeepTask = true;
             ped.BlockPermanentEvents = true;
             ped.Task.WanderAround();

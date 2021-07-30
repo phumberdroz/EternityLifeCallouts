@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Threading.Tasks;
 using CitizenFX.Core;
+using CitizenFX.Core.Native;
 using EternityLifeCallouts.Extensions;
 using FivePD.API;
 using FivePD.API.Utils;
@@ -25,6 +25,13 @@ namespace EternityLifeCallouts
             "Bench Warrant : Trespassing"
         };
 
+        private static readonly WeaponHash[] AggressiveWeapons =
+        {
+            WeaponHash.MicroSMG,
+            WeaponHash.SweeperShotgun,
+            WeaponHash.CombatPistol
+        };
+
         private Ped suspect;
 
         public BenchWarrant()
@@ -40,47 +47,38 @@ namespace EternityLifeCallouts
 
         public override async Task OnAccept()
         {
-            InitBlip(75f, (BlipColor) 66, (BlipSprite) 9, 100);
+            InitBlip();
         }
 
         public override async void OnStart(Ped closest)
         {
             base.OnStart(closest);
-            suspect = await this.SpawnPed(RandomUtils.GetRandomPed(), this.Location, 0f);
-            var handle = CitizenFX.Core.Native.API.RegisterPedheadshot(suspect.Handle);
-            while (!CitizenFX.Core.Native.API.IsPedheadshotReady(handle) ||
-                   !CitizenFX.Core.Native.API.IsPedheadshotValid(handle))
-            {
+            suspect = await SpawnPed(RandomUtils.GetRandomPed(), Location);
+            var handle = API.RegisterPedheadshot(suspect.Handle);
+            while (!API.IsPedheadshotReady(handle) ||
+                   !API.IsPedheadshotValid(handle))
                 await BaseScript.Delay(800);
-            }
 
             var data = await suspect.GetData();
             data.Warrant = ShortName;
             suspect.SetData(data);
             suspect.AttachBlip();
-            var txd = CitizenFX.Core.Native.API.GetPedheadshotTxdString(handle);
+            var txd = API.GetPedheadshotTxdString(handle);
             ShowNetworkedNotification("SAN ANDREAD COURT : OFFICIAL BENCH WARRANT", "commonmenu", "mp_alerttriangle",
                 "911 Dispatch:", "~y~Additional Info", StartDistance);
             ShowNetworkedNotification(
                 "Name: ~y~" + data.FirstName + " " + data.LastName + "~w~. Suspects most recent mugshot attached.", txd,
-                txd, "911 Dispatch:", "~y~Additional Info", StartDistance, -1
+                txd, "911 Dispatch:", "~y~Additional Info", StartDistance
             );
             var scenarios = new List<Action>
             {
                 () => Aggressive(),
                 () => NonAggressiveHandsUp(),
-                () => NonAggressiveFlee(),
+                () => NonAggressiveFlee()
             };
 
             scenarios.SelectRandom()();
         }
-
-        private static readonly WeaponHash[] AggressiveWeapons =
-        {
-            WeaponHash.MicroSMG,
-            WeaponHash.SweeperShotgun,
-            WeaponHash.CombatPistol,
-        };
 
         private void NonAggressiveFlee()
         {
@@ -90,7 +88,7 @@ namespace EternityLifeCallouts
 
         private void NonAggressiveHandsUp()
         {
-            suspect.Task.WanderAround(this.Location, 50);
+            suspect.Task.WanderAround(Location, 50);
             Tick += OnTickNonAggressiveHandsUp;
         }
 
@@ -107,7 +105,7 @@ namespace EternityLifeCallouts
         private void Aggressive()
         {
             suspect.Weapons.Give(AggressiveWeapons.SelectRandom(), 600, false, true);
-            suspect.Task.WanderAround(this.Location, 50);
+            suspect.Task.WanderAround(Location, 50);
             Debug.WriteLine($"Are they aggressive {suspect.GetRelationshipWithPed(Game.PlayerPed)}");
             Tick += OnTickAggressive;
         }

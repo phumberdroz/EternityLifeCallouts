@@ -45,31 +45,32 @@ namespace EternityLifeCallouts
 
         public BicycleOnHighway()
         {
-            this.InitInfo(Utils.GetLocation(CalloutPositions, Game.PlayerPed.Position));
-            this.ShortName = "Bicycle On Highway";
-            this.CalloutDescription = "911 Call : Bicycle reported driving on the highway.";
-            this.ResponseCode = 3;
-            this.StartDistance = 100;
+            InitInfo(Utils.GetLocation(CalloutPositions, Game.PlayerPed.Position));
+            ShortName = "Bicycle On Highway";
+            CalloutDescription = "911 Call : Bicycle reported driving on the highway.";
+            ResponseCode = 3;
+            StartDistance = 100;
         }
 
         public override async Task OnAccept()
         {
-            this.InitBlip(75f, (BlipColor) 66, (BlipSprite) 9, 100);
-            Utils.AdvNotify("commonmenu", "mp_alerttriangle", false, 1, "911 Dispatch:", "~y~Additional Info", "Reports of a bicycle driving on the highway.");
+            InitBlip();
+            Utils.AdvNotify("commonmenu", "mp_alerttriangle", false, 1, "911 Dispatch:", "~y~Additional Info",
+                "Reports of a bicycle driving on the highway.");
         }
 
         public override async void OnStart(Ped closest)
         {
             base.OnStart(closest);
-            var ped = await this.SpawnPed(RandomUtils.GetRandomPed(), this.Location, 0.0f);
-            var bicyclesModelNames = new string[]
+            var ped = await SpawnPed(RandomUtils.GetRandomPed(), Location);
+            var bicyclesModelNames = new[]
             {
                 "scorcher", "cruiser", "tribike"
             };
-            
+
             var model = new Model(bicyclesModelNames.SelectRandom());
-            var vehicle = await this.SpawnVehicle((model), World.GetNextPositionOnStreet(this.Location), 0.0f);
-            ped.SetIntoVehicle(vehicle,  VehicleSeat.Driver);
+            var vehicle = await SpawnVehicle(model, World.GetNextPositionOnStreet(Location));
+            ped.SetIntoVehicle(vehicle, VehicleSeat.Driver);
             ped.Task.CruiseWithVehicle(vehicle, 1f, 1); // Todo validate Driving Style
             ped.AlwaysKeepTask = true;
             ped.BlockPermanentEvents = true;

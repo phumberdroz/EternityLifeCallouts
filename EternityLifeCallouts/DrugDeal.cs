@@ -1,7 +1,3 @@
-using System.Threading.Tasks;
-using CitizenFX.Core;
-using FivePD.API;
-
 namespace EternityLifeCallouts
 {
 #if DEBUG

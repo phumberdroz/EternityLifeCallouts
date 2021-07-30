@@ -5,7 +5,6 @@ namespace EternityLifeCallouts.Extensions
 {
     public class Weapons
     {
-        
         public static readonly WeaponHash[] MeleeWeapons =
         {
             WeaponHash.Dagger,
@@ -18,7 +17,7 @@ namespace EternityLifeCallouts.Extensions
             WeaponHash.Machete,
             WeaponHash.SwitchBlade,
             WeaponHash.BattleAxe,
-            WeaponHash.StoneHatchet,
+            WeaponHash.StoneHatchet
         };
 
         public static readonly WeaponHash[] Handguns =
@@ -35,7 +34,7 @@ namespace EternityLifeCallouts.Extensions
             WeaponHash.Revolver,
             WeaponHash.RevolverMk2,
             WeaponHash.DoubleAction,
-            WeaponHash.Pistol50,
+            WeaponHash.Pistol50
         };
 
         public static readonly WeaponHash[] SubMachineGuns =
@@ -46,7 +45,7 @@ namespace EternityLifeCallouts.Extensions
             WeaponHash.AssaultSMG,
             WeaponHash.CombatPDW,
             WeaponHash.MachinePistol,
-            WeaponHash.MiniSMG,
+            WeaponHash.MiniSMG
         };
 
         public static readonly WeaponHash[] ShotGuns =
@@ -58,7 +57,7 @@ namespace EternityLifeCallouts.Extensions
             WeaponHash.BullpupShotgun,
             WeaponHash.HeavyShotgun,
             WeaponHash.DoubleBarrelShotgun,
-            WeaponHash.SweeperShotgun,
+            WeaponHash.SweeperShotgun
         };
 
         public static readonly WeaponHash[] AssaultRifles =
@@ -72,7 +71,7 @@ namespace EternityLifeCallouts.Extensions
             WeaponHash.SpecialCarbineMk2,
             WeaponHash.BullpupRifle,
             WeaponHash.BullpupRifleMk2,
-            WeaponHash.CompactRifle,
+            WeaponHash.CompactRifle
         };
 
         public static readonly WeaponHash[] SniperRifles =
@@ -81,16 +80,15 @@ namespace EternityLifeCallouts.Extensions
             WeaponHash.HeavySniper,
             WeaponHash.HeavySniperMk2,
             WeaponHash.MarksmanRifle,
-            WeaponHash.MarksmanRifleMk2,
+            WeaponHash.MarksmanRifleMk2
         };
 
-        public static readonly WeaponHash[] Guns = (new WeaponHash[] { })
+        public static readonly WeaponHash[] Guns = new WeaponHash[] { }
             .Union(AssaultRifles)
             .Union(SniperRifles)
             .Union(ShotGuns)
             .Union(SubMachineGuns)
             .Union(Handguns)
             .ToArray();
-
     }
 }

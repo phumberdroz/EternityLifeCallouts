@@ -12,18 +12,17 @@ namespace EternityLifeCallouts
     {
         public StolenPrisonBus()
         {
-            this.InitInfo(
-                World.GetNextPositionOnStreet(Game.PlayerPed.Position.Around(RandomUtils.GetRandomNumber(100, 700)),
-                    false));
-            this.ShortName = "Stolen Prison Bus";
-            this.CalloutDescription = "911 Call : Stolen Prison Bus.";
-            this.ResponseCode = 3;
-            this.StartDistance = 200;
+            InitInfo(
+                World.GetNextPositionOnStreet(Game.PlayerPed.Position.Around(RandomUtils.GetRandomNumber(100, 700))));
+            ShortName = "Stolen Prison Bus";
+            CalloutDescription = "911 Call : Stolen Prison Bus.";
+            ResponseCode = 3;
+            StartDistance = 200;
         }
 
         public override async Task OnAccept()
         {
-            this.InitBlip(100f, (BlipColor) 66, (BlipSprite) 9, 100);
+            InitBlip(100f);
         }
 
         public override async void OnStart(Ped closest)
@@ -34,7 +33,7 @@ namespace EternityLifeCallouts
             // Scenrario PrisonersEscapingWithBus
             var scenarios = new List<Action>
             {
-                () => ScenarioOnlyBus(),
+                () => ScenarioOnlyBus()
                 // () => ScenarioHandcuffedDriver(ped),
             };
 
@@ -43,7 +42,7 @@ namespace EternityLifeCallouts
 
         private void ScenarioOnlyBus()
         {
-            this.SpawnVehicle(VehicleHash.PBus, this.Location, 0f);
+            SpawnVehicle(VehicleHash.PBus, Location);
         }
     }
 }

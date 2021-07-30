@@ -1,5 +1,3 @@
-using FivePD.API;
-
 namespace EternityLifeCallouts
 {
 #if DEBUG
@@ -11,5 +9,4 @@ namespace EternityLifeCallouts
         }
     }
 #endif
-
 }

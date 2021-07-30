@@ -14,7 +14,8 @@ namespace EternityLifeCallouts
     {
         public ShotsFired()
         {
-            InitInfo(World.GetNextPositionOnStreet(Game.PlayerPed.Position.Around(RandomUtils.GetRandomNumber(100, 700)), false));
+            InitInfo(World.GetNextPositionOnStreet(
+                Game.PlayerPed.Position.Around(RandomUtils.GetRandomNumber(100, 700))));
             ShortName = "Shots Fired";
             CalloutDescription = "911 Call : Shots fired. Respond accordingly, remember to respond code 1 when nearby.";
             ResponseCode = 3;
@@ -23,7 +24,7 @@ namespace EternityLifeCallouts
 
         public override async Task OnAccept()
         {
-            InitBlip(75f, (BlipColor) 66, (BlipSprite) 9, 100);
+            InitBlip();
             Utils.AdvNotify("commonmenu", "mp_alerttriangle", false, 1, "911 Dispatch:", "~y~Additional Info",
                 "~w~ Caller reports multiple armed suspects shooting.");
         }
@@ -32,13 +33,13 @@ namespace EternityLifeCallouts
         {
             base.OnStart(closest);
 
-            var victim = await this.SpawnPed(RandomUtils.GetRandomPed(), this.Location.Around(2), 0.0f);
+            var victim = await SpawnPed(RandomUtils.GetRandomPed(), Location.Around(2));
             victim.AlwaysKeepTask = true;
             victim.BlockPermanentEvents = true;
             var suspects = new List<Ped>();
-            for (int i = 0; i < 2; i++)
+            for (var i = 0; i < 2; i++)
             {
-                var spawnPed = await this.SpawnPed(RandomUtils.GetRandomPed(), this.Location.Around(2), 0.0f);
+                var spawnPed = await SpawnPed(RandomUtils.GetRandomPed(), Location.Around(2));
                 suspects.Add(spawnPed);
             }
 
@@ -48,7 +49,7 @@ namespace EternityLifeCallouts
                 () => Scenario2(victim, suspects),
                 () => Scenario3(victim, suspects),
                 () => Scenario4(victim, suspects),
-                () => Scenario5(victim, suspects),
+                () => Scenario5(victim, suspects)
             };
 
             scenarios.SelectRandom()();
@@ -63,7 +64,7 @@ namespace EternityLifeCallouts
             {
                 suspect.GiveRandomWeapon();
                 suspect.RelationshipGroup = "HATES_PLAYER";
-                suspect.Task.FightAgainstHatedTargets(this.StartDistance);
+                suspect.Task.FightAgainstHatedTargets(StartDistance);
             }
         }
 
@@ -78,7 +79,7 @@ namespace EternityLifeCallouts
             {
                 suspect.GiveRandomHandGun();
                 suspect.RelationshipGroup = "HATES_PLAYER";
-                suspect.Task.FightAgainstHatedTargets(this.StartDistance);
+                suspect.Task.FightAgainstHatedTargets(StartDistance);
             }
         }
 
@@ -87,13 +88,13 @@ namespace EternityLifeCallouts
             Utils.Notify("~y~Call Update:~w~ Reports of possible gang related violence.");
             Utils.DrawSubtitle("~r~Suspect~w~: Run!", 7000);
             victim.Weapons.Give(Weapons.AssaultRifles.SelectRandom(), 600, true, true);
-            victim.Task.FleeFrom(this.AssignedPlayers.First());
+            victim.Task.FleeFrom(AssignedPlayers.First());
 
             foreach (var suspect in suspects)
             {
                 suspect.GiveRandomHandGun();
                 suspect.RelationshipGroup = "HATES_PLAYER";
-                suspect.Task.FightAgainstHatedTargets(this.StartDistance);
+                suspect.Task.FightAgainstHatedTargets(StartDistance);
             }
         }
 
@@ -105,11 +106,11 @@ namespace EternityLifeCallouts
             {
                 suspect.GiveRandomWeapon();
                 suspect.RelationshipGroup = "HATES_PLAYER";
-                suspect.Task.FightAgainstHatedTargets(this.StartDistance);
+                suspect.Task.FightAgainstHatedTargets(StartDistance);
             }
 
             victim.RelationshipGroup = "PLAYER";
-            victim.Task.FleeFrom(suspects.First(), -1);
+            victim.Task.FleeFrom(suspects.First());
         }
 
         private void Scenario5(Ped victim, List<Ped> suspects)
@@ -120,7 +121,7 @@ namespace EternityLifeCallouts
             {
                 suspect.GiveRandomWeapon();
                 suspect.RelationshipGroup = "HATES_PLAYER";
-                suspect.Task.FightAgainstHatedTargets(this.StartDistance);
+                suspect.Task.FightAgainstHatedTargets(StartDistance);
             }
 
             victim.Task.HandsUp(-1);

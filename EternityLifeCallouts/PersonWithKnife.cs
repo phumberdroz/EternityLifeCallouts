@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CitizenFX.Core;
-using CitizenFX.Core.Native;
 using EternityLifeCallouts.Extensions;
 using FivePD.API;
 using FivePD.API.Utils;
@@ -15,7 +14,7 @@ namespace EternityLifeCallouts
         public PersonWithKnife()
         {
             InitInfo(World.GetNextPositionOnStreet(
-                Game.PlayerPed.Position.Around(RandomUtils.GetRandomNumber(100, 700)), false));
+                Game.PlayerPed.Position.Around(RandomUtils.GetRandomNumber(100, 700))));
             ShortName = "Person With Knife";
             CalloutDescription = "911 Call : Person with knife spotted.";
             ResponseCode = 3;
@@ -25,13 +24,13 @@ namespace EternityLifeCallouts
         public override async void OnStart(Ped closest)
         {
             base.OnStart(closest);
-            var ped = await this.SpawnPed(RandomUtils.GetRandomPed(), (Vector3) this.Location, 0.0f);
+            var ped = await SpawnPed(RandomUtils.GetRandomPed(), Location);
             ped.Weapons.Give(Weapons.MeleeWeapons.SelectRandom(), 600, true, true);
 
             var scenarios = new List<Action>
             {
                 () => ScenarioWanderAround(ped),
-                () => ScenarioAttackPolice(ped),
+                () => ScenarioAttackPolice(ped)
             };
 
             scenarios.SelectRandom()();
@@ -50,7 +49,7 @@ namespace EternityLifeCallouts
 
         public override async Task OnAccept()
         {
-            this.InitBlip(100f, (BlipColor) 66, (BlipSprite) 9, 100);
+            InitBlip(100f);
             Utils.AdvNotify("commonmenu", "mp_alerttriangle", false, 1, "911 Dispatch:", "~y~Additional Info",
                 "Search the area for the subject.");
         }

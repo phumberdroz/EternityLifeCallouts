@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
@@ -61,15 +59,15 @@ namespace EternityLifeCallouts
         public ArmedRobbery()
         {
             var calloutCord = Utils.GetLocation(CalloutPositions, Game.PlayerPed.Position);
-            this.InitInfo(calloutCord);
-            this.ShortName = ShortNames.SelectRandom();
-            this.ResponseCode = 3;
-            this.StartDistance = 150;
+            InitInfo(calloutCord);
+            ShortName = ShortNames.SelectRandom();
+            ResponseCode = 3;
+            StartDistance = 150;
         }
 
         public override async Task OnAccept()
         {
-            this.InitBlip(75f, (BlipColor) 66, (BlipSprite) 9, 100);
+            InitBlip();
             Utils.AdvNotify("commonmenu", "mp_alerttriangle", false, 1, "911 Dispatch:", "~y~Additional Info",
                 "~w~Reports of an armed robbery taking place.");
         }
@@ -78,14 +76,14 @@ namespace EternityLifeCallouts
         {
             base.OnStart(closest);
             var suspects = new List<Ped>();
-            for (int i = 0; i < 3; i++)
+            for (var i = 0; i < 3; i++)
             {
-                var spawnedPed = await this.SpawnPed(RandomUtils.GetRandomPed(), this.Location.Around(5));
+                var spawnedPed = await SpawnPed(RandomUtils.GetRandomPed(), Location.Around(5));
                 suspects.Add(spawnedPed);
                 // Todo add illegal items like Stolen CreditCards and other things
             }
 
-            var victim = await this.SpawnPed(RandomUtils.GetRandomPed(), this.Location.Around(5));
+            var victim = await SpawnPed(RandomUtils.GetRandomPed(), Location.Around(5));
             victim.AlwaysKeepTask = true;
             victim.BlockPermanentEvents = true;
 
@@ -93,7 +91,7 @@ namespace EternityLifeCallouts
             {
                 () => VictimKilled(victim, suspects),
                 () => SuspectsKilled(victim, suspects),
-                () => VictimSurvived(victim, suspects),
+                () => VictimSurvived(victim, suspects)
             };
 
             functions.SelectRandom()();
@@ -108,6 +106,7 @@ namespace EternityLifeCallouts
                 suspect.RelationshipGroup = "AMBIENT_GANG_WEICHENG";
                 suspect.Task.ShootAt(victim);
             }
+
             API.Wait(5000);
             foreach (var suspect in suspects)
             {
@@ -118,22 +117,16 @@ namespace EternityLifeCallouts
 
         private void SuspectsKilled(Ped victim, List<Ped> suspects)
         {
-    
             victim.GiveRandomHandGun();
             victim.Task.ShootAt(suspects.SelectRandom());
             API.Wait(5000);
-            foreach (var suspect in suspects)
-            {
-                suspect.Kill();
-            }
+            foreach (var suspect in suspects) suspect.Kill();
             victim.Task.AimAt(suspects.SelectRandom(), -1);
         }
+
         private void VictimSurvived(Ped victim, List<Ped> suspects)
         {
-            foreach (var suspect in suspects)
-            {
-                suspect.MakeAggressiveAgainstPlayers();
-            }
+            foreach (var suspect in suspects) suspect.MakeAggressiveAgainstPlayers();
             victim.Task.HandsUp(-1);
         }
     }

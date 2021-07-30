@@ -116,7 +116,7 @@ namespace EternityLifeCallouts
 
         public override async Task OnAccept()
         {
-            InitBlip(75f, (BlipColor) 66, (BlipSprite) 9, 100);
+            InitBlip();
             Utils.AdvNotify("commonmenu", "mp_alerttriangle", false, 1, "911 Dispatch:", "~y~Additional Info",
                 "~w~Head to the scene and resolve the issue.");
         }
@@ -124,9 +124,9 @@ namespace EternityLifeCallouts
         public override async void OnStart(Ped closest)
         {
             base.OnStart(closest);
-            var ped1 = await this.SpawnPed(RandomUtils.GetRandomPed(), this.Location, 0.0f);
+            var ped1 = await SpawnPed(RandomUtils.GetRandomPed(), Location);
 
-            var ped2 = await this.SpawnPed(RandomUtils.GetRandomPed(), this.Location.Around(2));
+            var ped2 = await SpawnPed(RandomUtils.GetRandomPed(), Location.Around(2));
 
             ped1.AlwaysKeepTask = true;
             ped1.BlockPermanentEvents = true;
@@ -139,7 +139,7 @@ namespace EternityLifeCallouts
                 () => Scenario2(ped1, ped2),
                 () => Scenario3(ped1, ped2),
                 () => Scenario4(ped1, ped2),
-                () => Scenario5(ped1, ped2),
+                () => Scenario5(ped1, ped2)
             };
 
             scenarios.SelectRandom()();
@@ -151,8 +151,8 @@ namespace EternityLifeCallouts
 
         private void Scenario1(Ped neighbor1, Ped neighbor2)
         {
-            neighbor1.Task.TurnTo(neighbor2, -1);
-            neighbor2.Task.TurnTo(neighbor1, -1);
+            neighbor1.Task.TurnTo(neighbor2);
+            neighbor2.Task.TurnTo(neighbor1);
         }
 
         private void Scenario2(Ped neighbor1, Ped neighbor2)
@@ -172,12 +172,12 @@ namespace EternityLifeCallouts
 
         private void Scenario4(Ped neighbor1, Ped neighbor2)
         {
-            var peds = new[] {neighbor1, neighbor2,};
+            var peds = new[] {neighbor1, neighbor2};
             foreach (var ped in peds)
             {
                 ped.GiveRandomHandGun();
                 ped.RelationshipGroup = "HATES_PLAYER";
-                ped.Task.FightAgainstHatedTargets(this.StartDistance);
+                ped.Task.FightAgainstHatedTargets(StartDistance);
             }
         }
 
