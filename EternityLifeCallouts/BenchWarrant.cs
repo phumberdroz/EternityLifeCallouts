@@ -62,7 +62,6 @@ namespace EternityLifeCallouts
             var data = await suspect.GetData();
             data.Warrant = ShortName;
             suspect.SetData(data);
-            suspect.AttachBlip();
             var txd = API.GetPedheadshotTxdString(handle);
             ShowNetworkedNotification("SAN ANDREAD COURT : OFFICIAL BENCH WARRANT", "commonmenu", "mp_alerttriangle",
                 "911 Dispatch:", "~y~Additional Info", StartDistance);
@@ -106,7 +105,6 @@ namespace EternityLifeCallouts
         {
             suspect.Weapons.Give(AggressiveWeapons.SelectRandom(), 600, false, true);
             suspect.Task.WanderAround(Location, 50);
-            Debug.WriteLine($"Are they aggressive {suspect.GetRelationshipWithPed(Game.PlayerPed)}");
             Tick += OnTickAggressive;
         }
 

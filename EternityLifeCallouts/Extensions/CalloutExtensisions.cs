@@ -15,7 +15,6 @@ namespace EternityLifeCallouts.Extensions
                 var distanceToPosition = player.Position.DistanceToSquared(position);
                 if (distance > distanceToPosition)
                 {
-                    Debug.WriteLine($"Distance was {distance} is now {distanceToPosition}");
                     closestPlayer = player;
                     distance = distanceToPosition;
                 }
