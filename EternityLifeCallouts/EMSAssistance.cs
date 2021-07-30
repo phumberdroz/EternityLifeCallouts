@@ -74,7 +74,7 @@ namespace EternityLifeCallouts
 
             foreach (var patient in patients)
             {
-                patient.Weapons.Give(WeaponHash.CombatPistol, 600, true, true);
+                patient.GiveRandomHandGun();
                 patient.MakeAggressiveAgainstPlayers();
             }
         }
@@ -88,7 +88,7 @@ namespace EternityLifeCallouts
             }
             foreach (var patient in patients)
             {
-                patient.Weapons.Give(WeaponHash.Bat, 600, true, true);
+                patient.Weapons.Give(Weapons.MeleeWeapons.SelectRandom(), 600, true, true);
                 patient.MakeAggressiveAgainstPlayers();
             }
         }
@@ -115,7 +115,7 @@ namespace EternityLifeCallouts
             paramedics.SelectRandom().Kill();
             foreach (var patient in patients)
             {
-                patient.Weapons.Give(WeaponHash.SweeperShotgun, 600, true, true);
+                patient.Weapons.Give(Weapons.ShotGuns.SelectRandom(), 600, true, true);
                 patient.MakeAggressiveAgainstPlayers();
             }
         }

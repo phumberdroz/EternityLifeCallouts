@@ -151,7 +151,7 @@ namespace EternityLifeCallouts
             {
                 var spawnedPed = await this.SpawnPed(RandomUtils.GetRandomPed(), this.Location.Around(5), 0.0f);
                 // Todo add weapon variety 
-                spawnedPed.Weapons.Give(WeaponHash.HeavySniper, 600, true, true);
+                spawnedPed.GiveRandomWeapon();
                 spawnedPed.MakeAggressiveAgainstPlayers();
                 spawnedPed.Task.WanderAround();
             }

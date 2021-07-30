@@ -104,7 +104,7 @@ namespace EternityLifeCallouts
             API.SetEntityHealth(victim.Handle, 10);
             foreach (var suspect in suspects)
             {
-                suspect.Weapons.Give(WeaponHash.PistolMk2, 600, true, true);
+                suspect.GiveRandomHandGun();
                 suspect.RelationshipGroup = "AMBIENT_GANG_WEICHENG";
                 suspect.Task.ShootAt(victim);
             }
@@ -119,7 +119,7 @@ namespace EternityLifeCallouts
         private void SuspectsKilled(Ped victim, List<Ped> suspects)
         {
     
-            victim.Weapons.Give(WeaponHash.CombatPistol, 600, true, true);
+            victim.GiveRandomHandGun();
             victim.Task.ShootAt(suspects.SelectRandom());
             API.Wait(5000);
             foreach (var suspect in suspects)

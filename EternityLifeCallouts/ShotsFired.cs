@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CitizenFX.Core;
+using EternityLifeCallouts.Extensions;
 using FivePD.API;
 using FivePD.API.Utils;
 
@@ -60,7 +61,7 @@ namespace EternityLifeCallouts
             victim.RelationshipGroup = "PLAYER";
             foreach (var suspect in suspects)
             {
-                suspect.Weapons.Give(WeaponHash.CombatPistol, 600, true, true);
+                suspect.GiveRandomWeapon();
                 suspect.RelationshipGroup = "HATES_PLAYER";
                 suspect.Task.FightAgainstHatedTargets(this.StartDistance);
             }
@@ -75,7 +76,7 @@ namespace EternityLifeCallouts
             suspects.Add(victim);
             foreach (var suspect in suspects)
             {
-                suspect.Weapons.Give(WeaponHash.CombatPistol, 600, true, true);
+                suspect.GiveRandomHandGun();
                 suspect.RelationshipGroup = "HATES_PLAYER";
                 suspect.Task.FightAgainstHatedTargets(this.StartDistance);
             }
@@ -85,12 +86,12 @@ namespace EternityLifeCallouts
         {
             Utils.Notify("~y~Call Update:~w~ Reports of possible gang related violence.");
             Utils.DrawSubtitle("~r~Suspect~w~: Run!", 7000);
-            victim.Weapons.Give(WeaponHash.CarbineRifle, 600, true, true);
+            victim.Weapons.Give(Weapons.AssaultRifles.SelectRandom(), 600, true, true);
             victim.Task.FleeFrom(this.AssignedPlayers.First());
 
             foreach (var suspect in suspects)
             {
-                suspect.Weapons.Give(WeaponHash.CombatPistol, 600, true, true);
+                suspect.GiveRandomHandGun();
                 suspect.RelationshipGroup = "HATES_PLAYER";
                 suspect.Task.FightAgainstHatedTargets(this.StartDistance);
             }
@@ -102,7 +103,7 @@ namespace EternityLifeCallouts
             Utils.DrawSubtitle("~r~Suspect~w~: Run! Fuck you pigs!", 7000);
             foreach (var suspect in suspects)
             {
-                suspect.Weapons.Give(WeaponHash.CombatPistol, 600, true, true);
+                suspect.GiveRandomWeapon();
                 suspect.RelationshipGroup = "HATES_PLAYER";
                 suspect.Task.FightAgainstHatedTargets(this.StartDistance);
             }
@@ -117,7 +118,7 @@ namespace EternityLifeCallouts
             Utils.DrawSubtitle("~r~Suspect~w~: Run!", 7000);
             foreach (var suspect in suspects)
             {
-                suspect.Weapons.Give(WeaponHash.CombatPistol, 600, true, true);
+                suspect.GiveRandomWeapon();
                 suspect.RelationshipGroup = "HATES_PLAYER";
                 suspect.Task.FightAgainstHatedTargets(this.StartDistance);
             }

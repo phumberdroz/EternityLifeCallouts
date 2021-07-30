@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
+using EternityLifeCallouts.Extensions;
 using FivePD.API;
 using FivePD.API.Utils;
 
@@ -13,7 +14,8 @@ namespace EternityLifeCallouts
     {
         public PersonWithKnife()
         {
-            InitInfo(World.GetNextPositionOnStreet(Game.PlayerPed.Position.Around(RandomUtils.GetRandomNumber(100, 700)), false));
+            InitInfo(World.GetNextPositionOnStreet(
+                Game.PlayerPed.Position.Around(RandomUtils.GetRandomNumber(100, 700)), false));
             ShortName = "Person With Knife";
             CalloutDescription = "911 Call : Person with knife spotted.";
             ResponseCode = 3;
@@ -24,7 +26,7 @@ namespace EternityLifeCallouts
         {
             base.OnStart(closest);
             var ped = await this.SpawnPed(RandomUtils.GetRandomPed(), (Vector3) this.Location, 0.0f);
-            ped.Weapons.Give(WeaponHash.Knife, 600, true, true);
+            ped.Weapons.Give(Weapons.MeleeWeapons.SelectRandom(), 600, true, true);
 
             var scenarios = new List<Action>
             {
@@ -42,20 +44,7 @@ namespace EternityLifeCallouts
 
         private void ScenarioAttackPolice(Ped suspect)
         {
-            API.SetPedRelationshipGroupHash(suspect.Handle, (uint) API.GetHashKey("HATES_PLAYER"));
-            API.SetPedRelationshipGroupHash(Game.PlayerPed.Handle, (uint) API.GetHashKey("PLAYER"));
-
-            API.SetRelationshipBetweenGroups(5, (uint) API.GetHashKey("HATES_PLAYER"), (uint) API.GetHashKey("PLAYER"));
-            API.SetRelationshipBetweenGroups(5, (uint) API.GetHashKey("PLAYER"), (uint) API.GetHashKey("HATES_PLAYER"));
-
-            Debug.WriteLine($"Relationship is: {suspect.GetRelationshipWithPed(Game.PlayerPed)}");
-            API.SetPedCombatAttributes(suspect.Handle, 46, true);
-            API.SetPedCombatAbility(suspect.Handle, 100);
-
-            API.SetPedCombatMovement(suspect.Handle, 2);
-
-            API.SetPedCombatRange(suspect.Handle, 0);
-
+            suspect.MakeAggressiveAgainstPlayers();
             suspect.Task.WanderAround(suspect.Position, 5);
         }
 

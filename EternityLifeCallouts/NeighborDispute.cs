@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CitizenFX.Core;
+using EternityLifeCallouts.Extensions;
 using FivePD.API;
 using FivePD.API.Utils;
 
@@ -174,7 +175,7 @@ namespace EternityLifeCallouts
             var peds = new[] {neighbor1, neighbor2,};
             foreach (var ped in peds)
             {
-                ped.Weapons.Give(WeaponHash.CombatPistol, 600, true, true);
+                ped.GiveRandomHandGun();
                 ped.RelationshipGroup = "HATES_PLAYER";
                 ped.Task.FightAgainstHatedTargets(this.StartDistance);
             }
@@ -183,7 +184,7 @@ namespace EternityLifeCallouts
         private void Scenario5(Ped neighbor1, Ped neighbor2)
         {
             neighbor1.Kill();
-            neighbor2.Weapons.Give(WeaponHash.CombatPistol, 600, true, true);
+            neighbor2.GiveRandomWeapon();
             neighbor2.Task.AimAt(AssignedPlayers.First(), -1);
         }
     }

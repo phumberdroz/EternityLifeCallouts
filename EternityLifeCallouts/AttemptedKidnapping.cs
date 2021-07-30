@@ -63,7 +63,7 @@ namespace EternityLifeCallouts
 
         private void Scenario2(Ped victim, Ped suspect)
         {
-            victim.Weapons.Give(WeaponHash.Knife, 600, true, true);
+            victim.Weapons.Give(Weapons.MeleeWeapons.SelectRandom(), 600, true, true);
             victim.MakeAggressiveAgainstPlayers();
 
             suspect.Weapons.Give(WeaponHash.CombatPistol, 600, true, true);
@@ -72,7 +72,7 @@ namespace EternityLifeCallouts
 
         private void Scenario3(Ped victim, Ped suspect)
         {
-            suspect.Weapons.Give(WeaponHash.SweeperShotgun, 600, true, true);
+            suspect.Weapons.Give(Weapons.ShotGuns.SelectRandom(), 600, true, true);
             victim.Task.ReactAndFlee(suspect);
             suspect.MakeAggressiveAgainstPlayers();
         }
